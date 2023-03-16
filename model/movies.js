@@ -10,6 +10,7 @@ const multiplexSchema = new mongoose.Schema(
     link: { type: String },
     trailer: { type: String },
     tag: { type: String, required: true },
+    isDisabled  : { type: Boolean, default: false },
     feedback: [
       {
         name: { type: String },

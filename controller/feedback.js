@@ -17,7 +17,7 @@ exports.getFeedback = async (req, res, next) => {
 
 exports.postFeedback = async (req, res, next) => {
   try {
-    const { name, feedback } = req.body;
+    const { name, feedback ,rating } = req.body;
     if (!name || !feedback) {
       return res.status(400).json({
         message: 'Name and feedback are required',
@@ -27,6 +27,7 @@ exports.postFeedback = async (req, res, next) => {
     const feedBack = await Feedback.create({
       name: name,
       feedback: feedback,
+      rating: rating
     });
     return res.status(201).json({
       message: 'Feedback created successfully',
