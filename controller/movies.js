@@ -2,11 +2,26 @@ const Movie = require('../model/movies');
 const cloudinary = require('cloudinary').v2;
 exports.addBigPosterMovie = async (req, res) => {
   try {
-    const { movieName, description, minTicket, releaseDate, link, trailer,tag } =
-      req.body;
-      if(!movieName || !description || !minTicket || !releaseDate || !link || !trailer || !tag){
-        return res.status(400).json({message:"All fields are required"})
-      }
+    const {
+      movieName,
+      description,
+      minTicket,
+      releaseDate,
+      link,
+      trailer,
+      tag,
+    } = req.body;
+    if (
+      !movieName ||
+      !description ||
+      !minTicket ||
+      !releaseDate ||
+      !link ||
+      !trailer ||
+      !tag
+    ) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     const image = req?.file?.path;
     if (!image) {
@@ -42,8 +57,15 @@ exports.addBigPosterMovie = async (req, res) => {
 
 exports.addSmallPosterMovie = async (req, res) => {
   try {
-    const { movieName, description, minTicket, releaseDate, link, trailer,tag } =
-      req.body;
+    const {
+      movieName,
+      description,
+      minTicket,
+      releaseDate,
+      link,
+      trailer,
+      tag,
+    } = req.body;
     const image = req?.file?.path;
     if (!image) {
       return res.status(400).json({ message: 'Image is required' });
@@ -76,8 +98,15 @@ exports.addSmallPosterMovie = async (req, res) => {
 
 exports.addNowPlayingMovie = async (req, res) => {
   try {
-    const { movieName, description, minTicket, releaseDate, link, trailer ,tag} =
-      req.body;
+    const {
+      movieName,
+      description,
+      minTicket,
+      releaseDate,
+      link,
+      trailer,
+      tag,
+    } = req.body;
     const image = req?.file?.path;
     if (!image) {
       return res.status(400).json({ message: 'Image is required' });
@@ -110,8 +139,15 @@ exports.addNowPlayingMovie = async (req, res) => {
 
 exports.addComingSoonMovie = async (req, res) => {
   try {
-    const { movieName, description, minTicket, releaseDate, link, trailer ,tag} =
-      req.body;
+    const {
+      movieName,
+      description,
+      minTicket,
+      releaseDate,
+      link,
+      trailer,
+      tag,
+    } = req.body;
     const image = req?.file?.path;
     if (!image) {
       return res.status(400).json({ message: 'Image is required' });
@@ -161,6 +197,26 @@ exports.addFeedback = async (req, res) => {
 exports.deleteMovie = async (req, res) => {
   try {
     const { id } = req.params;
+    const movie = await Movie.findById(id);
+    if (movie.isDisabled === false) {
+      movie.isDisabled = true;
+      await movie.save();
+    } else {
+      movie.isDisabled = false;
+      await movie.save();
+    }
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+    return res.status(200).json({ message: 'Movie deleted successfully' });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.hardDeleteMovie = async (req, res) => {
+  try {
+    const { id } = req.params;
     const movie = await Movie.findByIdAndDelete(id);
     if (!movie) {
       return res.status(404).json({ message: 'Movie not found' });
@@ -179,4 +235,3 @@ exports.getAllMovies = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
-

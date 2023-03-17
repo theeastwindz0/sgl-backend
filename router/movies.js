@@ -38,4 +38,5 @@ router.post(
 router.post('/movie/addFeedback', movieController.addFeedback);
 router.get('/movie/getMovies', movieController.getAllMovies);
 router.delete('/movie/deleteMovie/:id', movieController.deleteMovie);
+router.delete('/movie/hardDeleteMovie/:id', movieController.hardDeleteMovie);
 module.exports = router;
