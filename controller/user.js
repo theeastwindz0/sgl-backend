@@ -1,6 +1,6 @@
 const User = require('../model/user');
 const jwt = require('jsonwebtoken');
-const secret = process.env.SECRET_KEY;
+const secret = "dabjfbaoebfoqbefbquwfbauboadbfvaoifnoanfoanidfbqucnaisuhfvw9udcq9uegfqtwdbxy08qj,w0r26;";
 
 exports.register = async (req, res) => {
   try {

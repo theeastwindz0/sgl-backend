@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const DB = process.env.DATABASE;
+const DB = "mongodb+srv://ArcTechnologies:sRJxjCM2MGpXFYwd@cluster0.gmldelf.mongodb.net/?retryWrites=true&w=majority";
 mongoose.set('strictQuery', false);
 mongoose
   .connect(DB)

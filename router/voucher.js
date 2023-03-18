@@ -1,6 +1,5 @@
-const GalleryController = require('../controller/gallery');
-const express = require('express');
-const router = express.Router();
+const VoucherControllers = require('../controller/voucher');
+const router = require('express').Router();
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
@@ -17,17 +16,24 @@ const storage = new CloudinaryStorage({
   },
 });
 const upload = multer({ storage: storage });
-router.get('/gallery/getAll', GalleryController.getGallery);
+
 router.post(
-  '/gallery/add',
+  '/voucher/createVoucher',
   verifyToken,
-  upload.single('url'),
-  GalleryController.postGallery
+  upload.single('image'),
+  VoucherControllers.createVoucher
+);
+router.get('/voucher/getAll', VoucherControllers.getVouchers);
+router.get('/voucher/get/:id', VoucherControllers.getVoucher);
+router.delete(
+  '/voucher/delete-voucher/:id',
+  verifyToken,
+  VoucherControllers.deleteVoucher
 );
 router.delete(
-  '/gallery/delete/:id',
+  '/voucher/disable-voucher/:id',
   verifyToken,
-  GalleryController.deleteGallery
+  VoucherControllers.disableVoucher
 );
 
 module.exports = router;
