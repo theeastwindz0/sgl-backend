@@ -10,7 +10,7 @@ exports.verifyToken = async (req, res, next) => {
     if (!userId) {
       return res.status(401).json({ message: 'Unauthorized User' });
     }
-    const decodedToken = jwt.verify(token, "process.env.SECRET_KEY");
+    const decodedToken = jwt.verify(token, "secret");
     const { id } = decodedToken;
     if (id !== userId) {
       return res.status(401).json({ message: 'Unauthorized' });

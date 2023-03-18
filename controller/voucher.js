@@ -2,28 +2,24 @@ const Voucher = require('../model/voucher');
 const cloudinary = require('cloudinary').v2;
 exports.createVoucher = async (req, res) => {
   try {
-    const { title, description, price, from, to } = req.body;
-    if (!title || !description || !price || !from || !to) {
+    const { title, description, from, to, isImage, url ,link } = req.body;
+    if (!title || !description || !from || !to || !isImage || !link) {
       return res.status(400).json({ message: 'Please enter all fields' });
     }
-    const image = req?.file?.path;
-    if (!image) {
-      return res.status(400).json({ message: 'Image is required' });
+    let fileUrl;
+    if (!req.file) {
+      fileUrl = url;
+    } else {
+      fileUrl = req.file.path;
     }
-    let imageLink = '';
-    await cloudinary.uploader.upload(image, (err, result) => {
-      if (err) {
-        return res.status(500).json({ message: err.message });
-      }
-      imageLink = result.secure_url;
-    });
     const voucher = await Voucher.create({
       title,
       description,
-      price,
       from,
+      isImage,
       to,
-      image: imageLink,
+      link,
+      url: fileUrl,
     });
     return res
       .status(201)
