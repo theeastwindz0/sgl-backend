@@ -2,13 +2,13 @@ const Voucher = require('../model/voucher');
 const cloudinary = require('cloudinary').v2;
 exports.createVoucher = async (req, res) => {
   try {
-    const { title, description, from, to, isImage, url ,link } = req.body;
+    const { title, description, from, to, isImage, image ,link } = req.body;
     if (!title || !description || !from || !to || !isImage || !link) {
       return res.status(400).json({ message: 'Please enter all fields' });
     }
     let fileUrl;
     if (!req.file) {
-      fileUrl = url;
+      fileUrl = image;
     } else {
       fileUrl = req.file.path;
     }
