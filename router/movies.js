@@ -44,6 +44,7 @@ router.post('/movie/addFeedback/:id', movieController.addFeedback);
 router.get('/movie/getMovies', movieController.getAllMovies);
 router.get('/movie/getMovieById/:id', movieController.getMovieById);
 router.get('/movie/getAllFeedbacks', movieController.getAllMovieFeedback);
+router.get('/movie/enableOrDisableMovieFeedback/:id', movieController.enableOrDisableFeedback);
 router.delete(
   '/movie/deleteMovie/:id',
   verifyToken,
