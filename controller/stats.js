@@ -31,12 +31,20 @@ exports.updateStats = async (req, res, next) => {
 
     }
     else{
-        const newStats = new StatsService({
-            totalVisitors: stats[0].totalVisitors + Math.floor(Math.random() * 10),
-            totalTicketsSold: stats[0].totalTicketsSold + Math.floor(Math.random() * 10),
-            totalRating: stats[0].totalRating ,
-        });
-        await newStats.save();
+        const newStats = await StatsService.findOneAndUpdate(
+            { _id: stats[0]._id },
+            {
+                $inc: {
+                    totalVisitors: Math.floor(Math.random() * 10),
+                    totalTicketsSold: Math.floor(Math.random() * 10),
+                },
+                $set: {
+                    totalRating: 4.7,
+                },
+            },
+            { new: true }
+        );
+
         return res.status(200).json({
             message: 'Stats updated successfully.',
             stats: newStats
