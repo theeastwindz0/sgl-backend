@@ -239,6 +239,18 @@ exports.enableOrDisableFeedback = async (req, res) => {
   }
 };
 
+exports.getAllMovieFeedback = async (req, res) => {
+  try {
+    const feedbacks = await Movie.find({ feedback: { $exists: true } });
+    if (!feedbacks) {
+      return res.status(404).json({ message: 'Feedback not found' });
+    }
+    return res.status(200).json({ feedbacks });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 exports.deleteMovie = async (req, res) => {
   try {
     const { id } = req.params;
