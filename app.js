@@ -8,6 +8,7 @@ const movieRouter = require('./router/movies');
 const feedBackRouter = require('./router/feedback');
 const galleryRouter = require('./router/gallery');
 const voucherRouter = require('./router/voucher');
+const statsRouter = require('./router/stats');
 const cors = require('cors');
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,6 +19,7 @@ app.use('/api', movieRouter);
 app.use('/api', feedBackRouter);
 app.use('/api', galleryRouter);
 app.use('/api', voucherRouter);
+app.use('/api', statsRouter);
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'Page not found' });
 });
