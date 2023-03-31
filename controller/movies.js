@@ -214,7 +214,6 @@ exports.addFeedback = async (req, res) => {
 
     return res.status(201).json({
       message: 'Feedback Added Successfully!',
-
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -225,16 +224,16 @@ exports.enableOrDisableFeedback = async (req, res) => {
   try {
     const { id } = req.params;
     const feedback = await Movie.findOne({
-      //find id in the feedback field
-      feedback: id,
+      feedback: { $elemMatch: { _id: id } },
     });
     feedback.isDisabled = !feedback.isDisabled;
     await feedback.save();
     if (!feedback) {
       return res.status(404).json({ message: 'Feedback not found' });
     }
-    return res.status(200).json({ message: 'Feedback deleted successfully' });
+    return res.status(200).json({ message: 'Feedback status changed successfully' });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: err.message });
   }
 };
