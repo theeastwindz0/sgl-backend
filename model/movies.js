@@ -15,6 +15,8 @@ const multiplexSchema = new mongoose.Schema(
       {
         name: { type: String },
         feedback: { type: String },
+        rating: { type: Number },
+        isDisabled  : { type: Boolean, default: true },
       },
     ],
   },

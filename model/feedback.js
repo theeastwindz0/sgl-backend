@@ -13,7 +13,11 @@ const feedbackSchema = new Schema({
   rating: {
     type: Number,
     required: true,
-    default: 5
+    default: 5,
+  },
+  isDisabled: {
+    type: Boolean,
+    default: true,
   },
 });
 
