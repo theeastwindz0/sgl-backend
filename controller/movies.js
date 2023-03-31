@@ -225,8 +225,13 @@ exports.enableOrDisableFeedback = async (req, res) => {
     const { id } = req.params;
     const feedback = await Movie.findOne({
       feedback: { $elemMatch: { _id: id } },
-    });
-    feedback.isDisabled = !feedback.isDisabled;
+    }).select('feedback');
+    const feedbacks = feedback.feedback;
+    for(let i = 0; i < feedbacks.length; i++) {
+      if(feedbacks[i]._id == id) {
+        feedbacks[i].isDisabled = !feedbacks[i].isDisabled;
+      }
+    }
     await feedback.save();
     if (!feedback) {
       return res.status(404).json({ message: 'Feedback not found' });
@@ -240,7 +245,7 @@ exports.enableOrDisableFeedback = async (req, res) => {
 
 exports.getAllMovieFeedback = async (req, res) => {
   try {
-    const feedbacks = await Movie.find({ feedback: { $exists: true } });
+    const feedbacks = await Movie.find();
     if (!feedbacks) {
       return res.status(404).json({ message: 'Feedback not found' });
     }

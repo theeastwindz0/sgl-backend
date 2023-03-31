@@ -19,6 +19,7 @@ const multiplexSchema = new mongoose.Schema(
         isDisabled  : { type: Boolean, default: true },
       },
     ],
+    default: [],
   },
   {
     timestamps: true,
