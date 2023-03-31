@@ -40,7 +40,7 @@ router.post(
   upload.single('image'),
   movieController.addComingSoonMovie
 );
-router.post('/movie/addFeedback', movieController.addFeedback);
+router.post('/movie/addFeedback/:id', movieController.addFeedback);
 router.get('/movie/getMovies', movieController.getAllMovies);
 router.get('/movie/getMovieById/:id', movieController.getMovieById);
 router.delete(

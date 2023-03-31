@@ -180,15 +180,60 @@ exports.addComingSoonMovie = async (req, res) => {
 
 exports.addFeedback = async (req, res) => {
   try {
-    const { name, feedback } = req.body;
-    const movie = await Movie.create({
-      name,
-      feedback,
-    });
+    const { id } = req.params;
+    const { name, feedback, rating } = req.body;
+    if (!name || !feedback || !rating) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+    if (movie.feedback.length > 0) {
+      const feedbackExist = movie.feedback.find((f) => f.name === name);
+      if (feedbackExist) {
+        return res.status(400).json({ message: 'Feedback already exist' });
+      } else {
+        const newFeedback = {
+          name,
+          feedback,
+          rating,
+        };
+        movie.feedback.push(newFeedback);
+        await movie.save();
+      }
+    } else {
+      const newFeedback = {
+        name,
+        feedback,
+        rating,
+      };
+      movie.feedback.push(newFeedback);
+      await movie.save();
+    }
+
     return res.status(201).json({
       message: 'Feedback Added Successfully!',
-      movie,
+
     });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+exports.enableOrDisableFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const feedback = await Movie.findOne({
+      //find id in the feedback field
+      feedback: id,
+    });
+    feedback.isDisabled = !feedback.isDisabled;
+    await feedback.save();
+    if (!feedback) {
+      return res.status(404).json({ message: 'Feedback not found' });
+    }
+    return res.status(200).json({ message: 'Feedback deleted successfully' });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
