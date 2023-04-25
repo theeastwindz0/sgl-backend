@@ -227,8 +227,8 @@ exports.enableOrDisableFeedback = async (req, res) => {
       feedback: { $elemMatch: { _id: id } },
     }).select('feedback');
     const feedbacks = feedback.feedback;
-    for(let i = 0; i < feedbacks.length; i++) {
-      if(feedbacks[i]._id == id) {
+    for (let i = 0; i < feedbacks.length; i++) {
+      if (feedbacks[i]._id == id) {
         feedbacks[i].isDisabled = !feedbacks[i].isDisabled;
       }
     }
@@ -236,7 +236,9 @@ exports.enableOrDisableFeedback = async (req, res) => {
     if (!feedback) {
       return res.status(404).json({ message: 'Feedback not found' });
     }
-    return res.status(200).json({ message: 'Feedback status changed successfully' });
+    return res
+      .status(200)
+      .json({ message: 'Feedback status changed successfully' });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: err.message });
@@ -315,5 +317,57 @@ exports.getMovieById = async (req, res) => {
       message: 'Something went wrong',
       error: error.message,
     });
+  }
+};
+
+exports.updateMovie = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      movieName,
+      description,
+      minTicket,
+      releaseDate,
+      link,
+      trailer,
+      tag,
+    } = req.body;
+    const image = req?.file?.path;
+    let imageLink = '';
+    if (image) {
+      await cloudinary.uploader.upload(image, (err, result) => {
+        if (err) {
+          return res.status(500).json({ message: err.message });
+        }
+        imageLink = result.secure_url;
+      });
+    }
+    const movie = await Movie.findById(id);
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+    const updatedMovie = await Movie.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          movieName: movieName || movie.movieName,
+          description: description || movie.description,
+          minTicket: minTicket || movie.minTicket,
+          releaseDate: releaseDate || movie.releaseDate,
+          link: link || movie.link,
+          trailer: trailer || movie.trailer,
+          tag: tag || movie.tag,
+          image: imageLink || movie.image,
+        },
+      },
+      { new: true }
+    );
+
+    return res
+      .status(200)
+      .json({ message: 'Movie Updated Successfully!', movie: updatedMovie });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: err.message });
   }
 };
