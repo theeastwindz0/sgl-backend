@@ -35,8 +35,8 @@ exports.updateStats = async (req, res, next) => {
             { _id: stats[0]._id },
             {
                 $inc: {
-                    totalVisitors: Math.floor(Math.random() * 10),
-                    totalTicketsSold: Math.floor(Math.random() * 10),
+                    totalVisitors: 3,
+                    totalTicketsSold: 3,
                 },
                 $set: {
                     totalRating: 4.7,
