@@ -12,7 +12,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'Zerox',
+    folder: 'sgl-miniplex',
   },
 });
 const upload = multer({ storage: storage });
