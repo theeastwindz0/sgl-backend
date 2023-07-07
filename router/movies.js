@@ -4,10 +4,10 @@ const { verifyToken } = require('../middlewares/jwt');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
-cloudinary.config({
-  cloud_name: 'deepank123',
-  api_key: '776897673883258',
-  api_secret: 'eHV3hRY3GSXmcHgoAoxj2SC00E0',
+cloudinary.config({ 
+  cloud_name: 'dagab89wn', 
+  api_key: '246182273423647', 
+  api_secret: 'J_jaVMePCpQbIT9ptOcFi2XfFyE' 
 });
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
